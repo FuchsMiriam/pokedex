@@ -1,0 +1,34 @@
+body {
+    margin: 0;
+    background-image: url('./img/pokedex.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+#pokedex {
+    min-height: 50vh;
+    background-color: rgba(250, 250, 138, 0.473);
+    color: black;
+    display: flex;
+}
+
+
+#pokemonImg {
+    height: auto;
+    width: 80%;
+}
+
+.pokedex-number-container {
+    display: flex;
+    align-items: center;
+}
+
+#pokedexNumberSymbol {
+    margin-right: 5px; /* Abstand zwischen dem Symbol und der Nummer */
+}
+
+.card {
+    margin: 5px;
+}

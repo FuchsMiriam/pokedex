@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokedex</title>
+
+    <script src="script.js"></script>
+    <link rel="shortcut icon" href="./img/pokemon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+
+<body onload="loadPokemon()">
+
+    <div id="pokedex">
+        <div class="card pokeCard" style="width: 18rem;">
+            <img id="pokemonImg" class="card-img-top img-fluid rounded-start" alt="Togepi">
+            <div class="card-body">
+                <div class="pokedex-number-container">
+                    <p id="pokedexNumberSymbol">#</p>
+                    <p id="pokedexNumber">Nr.</p>
+                </div>
+                <h5 class="card-title" id="pokemonName">Name</h5>
+                <p class="card-text" id="pokemonType">Typ</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" id="pokemonHeight">Größe</li>
+                <li class="list-group-item" id="pokemonWeight">Gewicht</li>
+                <li class="list-group-item" id="pokemonAbility">Attacken</li>
+            </ul>
+            <div class="card-body">
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</body>
+
+</html>
