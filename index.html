@@ -7,15 +7,27 @@
     <title>Pokedex</title>
 
     <script src="script.js"></script>
+    <script src="scriptPopup.js"></script>
     <link rel="shortcut icon" href="./img/pokemon.ico" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="stylePopup.css">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 </head>
 
 <body onload="loadPokemon()">
 
     <div id="pokedex">
-        <div class="card pokeCard" style="width: 18rem;">
+
+        <div id="overlay">
+            <div id="popup">
+                <h2>Popup-Fenster</h2>
+                <p>Hier ist der Inhalt des Popup-Fensters.</p>
+                <button id="closeBtn">Schließen</button>
+            </div>
+        </div>
+
+
+        <div class="card" style="width: 18rem;">
             <img id="pokemonImg" class="card-img-top img-fluid rounded-start" alt="Togepi">
             <div class="card-body">
                 <div class="pokedex-number-container">
@@ -26,9 +38,9 @@
                 <p class="card-text" id="pokemonType">Typ</p>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item" id="pokemonHeight">Größe</li>
-                <li class="list-group-item" id="pokemonWeight">Gewicht</li>
-                <li class="list-group-item" id="pokemonAbility">Attacken</li>
+                <li class="list-group-item">Größe: <span id="pokemonHeight">Größe</span></li>
+                <li class="list-group-item">Gewicht: <span id="pokemonWeight">Gewicht</span></li>
+                <li class="list-group-item">Attacken: <span id="pokemonAbility">Attacken</span></li>
             </ul>
             <div class="card-body">
                 <a href="#" class="card-link">Card link</a>

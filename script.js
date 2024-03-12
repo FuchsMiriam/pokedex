@@ -12,20 +12,23 @@ async function loadPokemon() {
 
 function renderPokemonInfo() {
     document.getElementById('pokedexNumber').innerHTML = currentPokemon['game_indices'][0]['game_index'];
-    var name = currentPokemon['name'];
-    var formattedName = name.charAt(0).toUpperCase() + name.slice(1);
+    let name = currentPokemon['name'];
+    let formattedName = name.charAt(0).toUpperCase() + name.slice(1);
     document.getElementById('pokemonName').innerHTML = formattedName;
     document.getElementById('pokemonImg').src = currentPokemon['sprites']['front_default'];
-    document.getElementById('pokemonType').innerHTML = currentPokemon['types'][0]['type']['name'];
+    let type = currentPokemon['types'][0]['type']['name'];
+    let formattedType = type.charAt(0).toUpperCase() + type.slice(1);
+    document.getElementById('pokemonType').innerHTML = formattedType;
     document.getElementById('pokemonHeight').innerHTML = (currentPokemon['height'] / 10).toLocaleString() + " m";
     document.getElementById('pokemonWeight').innerHTML = (currentPokemon['weight'] / 10).toLocaleString() + " kg";
 
-    var abilities = currentPokemon['abilities'].map(function(ability) {
-        var abilityName = ability['ability']['name'];
+    let abilities = currentPokemon['abilities'].map(function(ability) {
+        let abilityName = ability['ability']['name'];
         return abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
     });
 
-    var abilitiesText = abilities.join(', ');
+    let abilitiesText = abilities.join(', ');
 
     document.getElementById('pokemonAbility').innerHTML = abilitiesText;
 }
+
