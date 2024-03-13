@@ -12,9 +12,14 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="stylePopup.css">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="fonts.css">
 </head>
 
-<body onload="loadPokemon()">
+<body onload="loadPokemon(); includeHTML()">
+
+    <header>
+        <div w3-include-html="./templates/header.html"></div>
+    </header>
 
     <div id="pokedex">
 
@@ -32,7 +37,7 @@
 
 
 
-        <div class="card" style="width: 18rem;">
+        <div class="card fairy" style="width: 18rem;">
             <img id="pokemonImg" class="card-img-top img-fluid rounded-start" alt="Togepi">
             <div class="card-body">
                 <div class="pokedex-number-container">
@@ -47,10 +52,6 @@
                 <li class="list-group-item">Gewicht: <span id="pokemonWeight">Gewicht</span></li>
                 <li class="list-group-item">Attacken: <span id="pokemonAbility">Attacken</span></li>
             </ul>
-            <div class="card-body">
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
-            </div>
         </div>
 
     </div>
