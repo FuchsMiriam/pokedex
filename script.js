@@ -1,4 +1,5 @@
 let currentPokemon;
+let currentBatch = 1; // Variable, um den aktuellen Batch von Pokémon zu verfolgen
 
 async function includeHTML() {
     let includeElements = document.querySelectorAll('[w3-include-html]');
@@ -14,35 +15,48 @@ async function includeHTML() {
     }
 }
 
-async function loadPokemon() {
-    let url = 'https://pokeapi.co/api/v2/pokemon/togepi';
+async function fetchPokemonNames(startIndex, endIndex) {
+    let url = `https://pokeapi.co/api/v2/pokemon/?limit=${endIndex - startIndex + 1}&offset=${startIndex - 1}`;
     let response = await fetch(url);
-    currentPokemon = await response.json();
-
-    console.log('Loaded pokemon', currentPokemon);
-
-    renderPokemonInfo();
+    let data = await response.json();
+    let pokemonNames = data.results.map(pokemon => pokemon.name);
+    return pokemonNames;
 }
 
-function renderPokemonInfo() {
-    document.getElementById('pokedexNumber').innerHTML = currentPokemon['game_indices'][0]['game_index'];
+async function loadPokemon() {
+    let startIndex = (currentBatch - 1) * 40 + 1;
+    let endIndex = currentBatch * 40;
+    let pokemonNames = await fetchPokemonNames(startIndex, endIndex);
+    for (let i = 0; i < pokemonNames.length; i++) {
+        let pokemonName = pokemonNames[i];
+        let pokemonData = await fetchPokemonData(pokemonName);
+        renderPokemonInfo(pokemonData);
+    }
+}
+
+async function fetchPokemonData(pokemonName) {
+    let url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
+    let response = await fetch(url);
+    let data = await response.json();
+    return data;
+}
+
+document.getElementById("loadMoreButton").addEventListener("click", async function() {
+    currentBatch++;
+    await loadPokemon();
+});
+
+
+function renderPokemonInfo(currentPokemon) {
+    document.getElementById('pokedexNumber').innerHTML = currentPokemon['game_indices'][4]['game_index'];
     let name = currentPokemon['name'];
     let formattedName = name.charAt(0).toUpperCase() + name.slice(1);
     document.getElementById('pokemonName').innerHTML = formattedName;
-    document.getElementById('pokemonImg').src = currentPokemon['sprites']['front_default'];
+    document.getElementById('pokemonImg').src = currentPokemon['sprites']['other']['official-artwork']['front_default'];
     let type = currentPokemon['types'][0]['type']['name'];
     let formattedType = type.charAt(0).toUpperCase() + type.slice(1);
     document.getElementById('pokemonType').innerHTML = formattedType;
-    document.getElementById('pokemonHeight').innerHTML = (currentPokemon['height'] / 10).toLocaleString() + " m";
-    document.getElementById('pokemonWeight').innerHTML = (currentPokemon['weight'] / 10).toLocaleString() + " kg";
-
-    let abilities = currentPokemon['abilities'].map(function(ability) {
-        let abilityName = ability['ability']['name'];
-        return abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
-    });
-
-    let abilitiesText = abilities.join(', ');
-
-    document.getElementById('pokemonAbility').innerHTML = abilitiesText;
 }
+
+window.onload = loadPokemon;
 
