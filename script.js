@@ -23,17 +23,6 @@ async function fetchPokemonNames(startIndex, endIndex) {
     return pokemonNames;
 }
 
-async function loadPokemon() {
-    let startIndex = (currentBatch - 1) * 40 + 1;
-    let endIndex = currentBatch * 40;
-    let pokemonNames = await fetchPokemonNames(startIndex, endIndex);
-    for (let i = 0; i < pokemonNames.length; i++) {
-        let pokemonName = pokemonNames[i];
-        let pokemonData = await fetchPokemonData(pokemonName);
-        renderPokemonInfo(pokemonData);
-    }
-}
-
 async function fetchPokemonData(pokemonName) {
     let url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
     let response = await fetch(url);
@@ -41,13 +30,45 @@ async function fetchPokemonData(pokemonName) {
     return data;
 }
 
-document.getElementById("loadMoreButton").addEventListener("click", async function() {
+document.getElementById("loadMoreButton").addEventListener("click", async function () {
     currentBatch++;
     await loadPokemon();
 });
 
+async function loadPokemon() {
+    let startIndex = (currentBatch - 1) * 40 + 1;
+    let endIndex = currentBatch * 40;
+    let pokemonNames = await fetchPokemonNames(startIndex, endIndex);
+    document.addEventListener("DOMContentLoaded", async function () {
+        for (let i = 0; i < pokemonNames.length; i++) {
+            let pokemonName = pokemonNames[i];
+            let pokemonData = await fetchPokemonData(pokemonName);
+            createCard(pokemonData);
+        }
+    });
+}
 
-function renderPokemonInfo(currentPokemon) {
+function createCard(pokemonData) {
+    const cardContainer = document.getElementById('card');
+    const cardTemplate = ` <div class="card fairy" style="width: 18rem;">
+    <img id="pokemonImg" class="card-img-top img-fluid rounded-start" alt="Pokemon">
+    <div class="card-body">
+        <div class="pokedex-number-container">
+            <p id="pokedexNumber">#</p>
+            <p id="pokedexNumber">Nr.</p>
+        </div>
+        <h5 class="card-title" id="pokemonName">Name</h5>
+        <p class="card-text" id="pokemonType">Typ</p>
+    </div>
+</div>`;
+    cardContainer.innerHTML = cardTemplate;
+
+    renderPokemonInfo(cardContainer, pokemonData);
+
+    cardContainer.appendChild(card);
+}
+
+function renderPokemonInfo(cardContainer, currentPokemon) {
     document.getElementById('pokedexNumber').innerHTML = currentPokemon['game_indices'][4]['game_index'];
     let name = currentPokemon['name'];
     let formattedName = name.charAt(0).toUpperCase() + name.slice(1);
@@ -58,5 +79,8 @@ function renderPokemonInfo(currentPokemon) {
     document.getElementById('pokemonType').innerHTML = formattedType;
 }
 
-window.onload = loadPokemon;
+document.addEventListener("DOMContentLoaded", function () {
+    loadPokemon();
+});
+
 
