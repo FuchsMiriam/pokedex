@@ -1,5 +1,6 @@
 let currentPokemon;
-let currentBatch = 1; // Variable, um den aktuellen Batch von Pokémon zu verfolgen
+let currentBatch = 1;
+cardIndex = 1;
 
 async function includeHTML() {
     let includeElements = document.querySelectorAll('[w3-include-html]');
@@ -39,44 +40,41 @@ async function loadPokemon() {
     let startIndex = (currentBatch - 1) * 40 + 1;
     let endIndex = currentBatch * 40;
     let pokemonNames = await fetchPokemonNames(startIndex, endIndex);
-    document.addEventListener("DOMContentLoaded", async function () {
-        for (let i = 0; i < pokemonNames.length; i++) {
-            let pokemonName = pokemonNames[i];
-            let pokemonData = await fetchPokemonData(pokemonName);
-            createCard(pokemonData);
-        }
-    });
+
+    for (let i = 0; i < pokemonNames.length; i++) {
+        let pokemonName = pokemonNames[i];
+        let pokemonData = await fetchPokemonData(pokemonName);
+        createCard(pokemonData);
+    }
 }
 
 function createCard(pokemonData) {
-    const cardContainer = document.getElementById('card');
-    const cardTemplate = ` <div class="card fairy" style="width: 18rem;">
-    <img id="pokemonImg" class="card-img-top img-fluid rounded-start" alt="Pokemon">
-    <div class="card-body">
-        <div class="pokedex-number-container">
-            <p id="pokedexNumber">#</p>
-            <p id="pokedexNumber">Nr.</p>
+    let cardHtml = `<div id="card-${cardIndex}" class = "card">
+        <img id="pokemonImg-${cardIndex}" class="card-img-top img-fluid rounded-start" alt="Pokemon">
+        <div class="card-body">
+            <div class="pokedex-number-container">
+                <p id="pokedexNumberSymbol">#</p>
+                <p id="pokedexNumber${cardIndex}">Nr.</p>
+            </div>
+            <h5 class="card-title" id="pokemonName-${cardIndex}">Name</h5>
+            <p class="card-text" id="pokemonType-${cardIndex}">Typ</p>
         </div>
-        <h5 class="card-title" id="pokemonName">Name</h5>
-        <p class="card-text" id="pokemonType">Typ</p>
-    </div>
-</div>`;
-    cardContainer.innerHTML = cardTemplate;
+    </div>`;
 
-    renderPokemonInfo(cardContainer, pokemonData);
-
-    cardContainer.appendChild(card);
+    document.getElementById('card').innerHTML += cardHtml;
+    renderPokemonInfo(pokemonData, cardIndex);
+    cardIndex++;
 }
 
-function renderPokemonInfo(cardContainer, currentPokemon) {
-    document.getElementById('pokedexNumber').innerHTML = currentPokemon['game_indices'][4]['game_index'];
+function renderPokemonInfo(currentPokemon, index) {
+    document.getElementById(`pokedexNumber${index}`).innerHTML = currentPokemon['game_indices'][4]['game_index'];
     let name = currentPokemon['name'];
     let formattedName = name.charAt(0).toUpperCase() + name.slice(1);
-    document.getElementById('pokemonName').innerHTML = formattedName;
-    document.getElementById('pokemonImg').src = currentPokemon['sprites']['other']['official-artwork']['front_default'];
+    document.getElementById(`pokemonName-${index}`).innerHTML = formattedName;
+    document.getElementById(`pokemonImg-${index}`).src = currentPokemon['sprites']['other']['official-artwork']['front_default'];
     let type = currentPokemon['types'][0]['type']['name'];
     let formattedType = type.charAt(0).toUpperCase() + type.slice(1);
-    document.getElementById('pokemonType').innerHTML = formattedType;
+    document.getElementById(`pokemonType-${index}`).innerHTML = formattedType;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
