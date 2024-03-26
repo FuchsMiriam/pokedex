@@ -50,7 +50,8 @@ async function loadPokemon() {
 
 function createCard(pokemonData) {
     let cardHtml = `<div id="card-${cardIndex}" class = "card">
-        <img id="pokemonImg-${cardIndex}" class="card-img-top img-fluid rounded-start" alt="Pokemon">
+        <div class = "imageContainer"><img id="pokemonImg-${cardIndex}" class="card-img-top img-fluid rounded-start" alt="Pokemon">
+        </div>
         <div class="card-body">
             <div class="pokedex-number-container">
                 <p id="pokedexNumberSymbol">#</p>
@@ -75,6 +76,9 @@ function renderPokemonInfo(currentPokemon, index) {
     let type = currentPokemon['types'][0]['type']['name'];
     let formattedType = type.charAt(0).toUpperCase() + type.slice(1);
     document.getElementById(`pokemonType-${index}`).innerHTML = formattedType;
+
+    let cardElement = document.getElementById(`card-${index}`);
+    cardElement.classList.add(type);
 }
 
 document.addEventListener("DOMContentLoaded", function () {

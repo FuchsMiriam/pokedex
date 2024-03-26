@@ -43,7 +43,7 @@ body {
     margin: 0;
     background-image: url('./img/pokedex.jpg');
     background-size: cover;
-    background-repeat: no-repeat;
+    background-repeat: repeat;
     background-position: center;
     font-family: 'Noto Sans';
 }
@@ -56,11 +56,6 @@ body {
     flex-direction: column;
 }
 
-#pokemonImg {
-    height: 200px;
-    width: 80%;
-    margin: 0 auto;
-}
 
 .pokedex-number-container {
     display: flex;
@@ -75,12 +70,18 @@ body {
 .card {
     margin: 20px;
     transition: transform 0.2s ease-in-out;
-    height: 380px !important;
+    height: 360px !important;
 }
 
 #card {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+}
+
+.imageContainer{
+    display: flex;
+    justify-content: center;
 }
 
 .img-fluid {
