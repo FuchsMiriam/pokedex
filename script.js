@@ -85,4 +85,50 @@ document.addEventListener("DOMContentLoaded", function () {
     loadPokemon();
 });
 
+//*Popup*/
+
+function createPopup(pokemonData, index) {
+    let popupHtml = `<div id="overlay-${index}" class="overlay">
+    <div class="imageContainer"><img id="pokemonImg-${index}"
+            class="card-img-top img-fluid rounded-start" alt="Pokemon">
+    </div>
+    <ul class="nav nav-tabs">
+        <div>
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="#">About</a>
+            <li class="list-group-item cardDescription"><b>Größe:</b> <span id="pokemonHeight">Größe</span>
+            </li>
+            <li class="list-group-item cardDescription"><b>Gewicht:</b> <span
+                    id="pokemonWeight">Gewicht</span></li>
+            <li class="list-group-item cardDescription"><b>Attacken:</b> <span
+                    id="pokemonAbility">Attacken</span></li>
+            </li>
+        </div>
+        <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">Stats</a>
+            <p id="pokedexStats${cardIndex}">Stats</p>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">Evolutions</a>
+        </li>
+    </ul>
+</div>`;
+
+document.getElementById('overlay').innerHTML += popupHtml;
+renderPokemonTabs(pokemonData, index);
+}
+
+function renderPokemonTabs(currentPokemon, index) {
+    document.getElementById(`pokedexStats${index}`).innerHTML = currentPokemon['game_indices'][4]['game_index'];
+    document.getElementById('pokemonHeight').innerHTML = (currentPokemon['height'] / 10).toLocaleString() + " m";
+    document.getElementById('pokemonWeight').innerHTML = (currentPokemon['weight'] / 10).toLocaleString() + " kg";
+    let abilities = currentPokemon['abilities'].map(function (ability) {
+        let abilityName = ability['ability']['name'];
+        return abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
+    });
+    let abilitiesText = abilities.join(', ');
+    document.getElementById('pokemonAbility').innerHTML = abilitiesText;
+
+}
+    
 
