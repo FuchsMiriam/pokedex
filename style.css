@@ -70,7 +70,7 @@ body {
 .card {
     margin: 20px;
     transition: transform 0.2s ease-in-out;
-    height: 360px !important;
+    height: 380px !important;
 }
 
 #card {
@@ -79,7 +79,7 @@ body {
     justify-content: center;
 }
 
-.imageContainer{
+.imageContainer {
     display: flex;
     justify-content: center;
 }
@@ -88,8 +88,13 @@ body {
     max-width: 50% !important;
 }
 
+.number {
+    margin-bottom: 10px;
+}
+
 .card:hover {
     transform: scale(1.05);
+    cursor: pointer;
 }
 
 .cardDescription {

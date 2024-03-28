@@ -50,19 +50,20 @@ async function loadPokemon() {
 
 function createCard(pokemonData) {
     let cardHtml = `<div id="card-${cardIndex}" class = "card">
-        <div class = "imageContainer"><img id="pokemonImg-${cardIndex}" class="card-img-top img-fluid rounded-start" alt="Pokemon">
+        <div class = "imageContainer"><img id="pokemonImg${cardIndex}" class="card-img-top img-fluid rounded-start" alt="Pokemon">
         </div>
         <div class="card-body">
             <div class="pokedex-number-container">
-                <p id="pokedexNumberSymbol">#</p>
-                <p id="pokedexNumber${cardIndex}">Nr.</p>
+                <p class="number" id="pokedexNumberSymbol">#</p>
+                <p class="number" id="pokedexNumber${cardIndex}">Nr.</p>
             </div>
-            <h5 class="card-title" id="pokemonName-${cardIndex}">Name</h5>
-            <p class="card-text" id="pokemonType-${cardIndex}">Typ</p>
+            <h5 class="card-title" id="pokemonName${cardIndex}">Name</h5>
+            <p class="card-text" id="pokemonType${cardIndex}">Typ</p>
         </div>
     </div>`;
 
     document.getElementById('card').innerHTML += cardHtml;
+
     renderPokemonInfo(pokemonData, cardIndex);
     cardIndex++;
 }
@@ -71,11 +72,11 @@ function renderPokemonInfo(currentPokemon, index) {
     document.getElementById(`pokedexNumber${index}`).innerHTML = currentPokemon['game_indices'][4]['game_index'];
     let name = currentPokemon['name'];
     let formattedName = name.charAt(0).toUpperCase() + name.slice(1);
-    document.getElementById(`pokemonName-${index}`).innerHTML = formattedName;
-    document.getElementById(`pokemonImg-${index}`).src = currentPokemon['sprites']['other']['official-artwork']['front_default'];
+    document.getElementById(`pokemonName${index}`).innerHTML = formattedName;
+    document.getElementById(`pokemonImg${index}`).src = currentPokemon['sprites']['other']['official-artwork']['front_default'];
     let type = currentPokemon['types'][0]['type']['name'];
     let formattedType = type.charAt(0).toUpperCase() + type.slice(1);
-    document.getElementById(`pokemonType-${index}`).innerHTML = formattedType;
+    document.getElementById(`pokemonType${index}`).innerHTML = formattedType;
 
     let cardElement = document.getElementById(`card-${index}`);
     cardElement.classList.add(type);
@@ -87,21 +88,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //*Popup*/
 
-function createPopup(pokemonData, index) {
-    let popupHtml = `<div id="overlay-${index}" class="overlay">
-    <div class="imageContainer"><img id="pokemonImg-${index}"
+function createPopup(pokemonData) {
+    let popupHtml = `<div id="overlay-${cardIndex}" class="overlay">
+    <div class="imageContainer"><img id="pokemonImg${cardIndex}"
             class="card-img-top img-fluid rounded-start" alt="Pokemon">
     </div>
     <ul class="nav nav-tabs">
         <div>
             <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="#">About</a>
-            <li class="list-group-item cardDescription"><b>Größe:</b> <span id="pokemonHeight">Größe</span>
+            <li class="list-group-item cardDescription"><b>Größe:</b> <span id="pokemonHeight${cardIndex}">Größe</span>
             </li>
             <li class="list-group-item cardDescription"><b>Gewicht:</b> <span
-                    id="pokemonWeight">Gewicht</span></li>
+                    id="pokemonWeight${cardIndex}">Gewicht</span></li>
             <li class="list-group-item cardDescription"><b>Attacken:</b> <span
-                    id="pokemonAbility">Attacken</span></li>
+                    id="pokemonAbility${cardIndex}">Attacken</span></li>
             </li>
         </div>
         <li class="nav-item">
@@ -114,21 +115,22 @@ function createPopup(pokemonData, index) {
     </ul>
 </div>`;
 
-document.getElementById('overlay').innerHTML += popupHtml;
-renderPokemonTabs(pokemonData, index);
+    document.getElementById('overlay').innerHTML += popupHtml;
+    renderPokemonTabs(pokemonData, cardIndex);
 }
 
 function renderPokemonTabs(currentPokemon, index) {
+    document.getElementById(`pokemonImg${index}`).src = currentPokemon['sprites']['other']['official-artwork']['front_default'];
     document.getElementById(`pokedexStats${index}`).innerHTML = currentPokemon['game_indices'][4]['game_index'];
-    document.getElementById('pokemonHeight').innerHTML = (currentPokemon['height'] / 10).toLocaleString() + " m";
-    document.getElementById('pokemonWeight').innerHTML = (currentPokemon['weight'] / 10).toLocaleString() + " kg";
+    document.getElementById(`pokemonHeight-${index}`).innerHTML = (currentPokemon['height'] / 10).toLocaleString() + " m";
+    document.getElementById(`pokemonWeight${index}`).innerHTML = (currentPokemon['weight'] / 10).toLocaleString() + " kg";
     let abilities = currentPokemon['abilities'].map(function (ability) {
         let abilityName = ability['ability']['name'];
         return abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
     });
     let abilitiesText = abilities.join(', ');
-    document.getElementById('pokemonAbility').innerHTML = abilitiesText;
+    document.getElementById(`pokemonAbility${index}`).innerHTML = abilitiesText;
 
-}
-    
+};
+
 
