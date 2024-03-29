@@ -46,6 +46,7 @@ body {
     background-repeat: repeat;
     background-position: center;
     font-family: 'Noto Sans';
+    overflow-x: hidden;
 }
 
 #pokedex {
@@ -107,3 +108,5 @@ body {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
+

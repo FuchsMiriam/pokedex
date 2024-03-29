@@ -65,6 +65,7 @@ function createCard(pokemonData) {
     document.getElementById('card').innerHTML += cardHtml;
 
     renderPokemonInfo(pokemonData, cardIndex);
+
     cardIndex++;
 }
 
@@ -89,7 +90,9 @@ document.addEventListener("DOMContentLoaded", function () {
 //*Popup*/
 
 function createPopup(pokemonData) {
-    let popupHtml = `<div id="overlay-${cardIndex}" class="overlay">
+    let popupHtml = `
+    <div class = "overlayOutside">
+    <div id="overlay-${cardIndex}" class="overlayVisible">
     <div class="imageContainer"><img id="pokemonImg${cardIndex}"
             class="card-img-top img-fluid rounded-start" alt="Pokemon">
     </div>
@@ -113,10 +116,15 @@ function createPopup(pokemonData) {
             <a class="nav-link" aria-current="page" href="#">Evolutions</a>
         </li>
     </ul>
-</div>`;
+    </div>
+    </div>`;
 
-    document.getElementById('overlay').innerHTML += popupHtml;
+    document.getElementById('overlay').innerHTML = popupHtml;
+    document.getElementById('overlay').classList.remove("overlay");
+    document.getElementById(`overlay-${cardIndex}`).classList.add("overlayVisible");
+
     renderPokemonTabs(pokemonData, cardIndex);
+    cardIndex++;
 }
 
 function renderPokemonTabs(currentPokemon, index) {
