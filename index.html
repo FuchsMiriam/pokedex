@@ -1,42 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokédex</title>
 
-    <link rel="shortcut icon" href="./img/pokemon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="stylePopup.css">
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="fonts.css">
-    <link rel="stylesheet" href="bg-colors.css">
-</head>
+    <link rel="shortcut icon" href="./img/pokemon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="stylePopup.css" />
+    <link
+      rel="stylesheet"
+      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="fonts.css" />
+    <link rel="stylesheet" href="bg-colors.css" />
+  </head>
 
-<body onload="includeHTML()">
+  <body>
+    <div class="header">
+      <div class="headerLeft">
+        <h1 class="headline">Pokédex</h1>
+        <a href="../index.html"
+          ><img src="./img/pokeball.jpg" alt="Pokeball" class="headerImg"
+        /></a>
+      </div>
 
-    <header>
-        <div w3-include-html="./templates/header.html"></div>
-    </header>
+      <div class="headerRight">
+        <input class="inputfield" type="text" />
+        <button
+          onclick="searchPokemon()"
+          type="button"
+          class="btn btn-secondary btn-sm"
+        >
+          Suchen
+        </button>
+      </div>
+    </div>
 
     <div id="pokedex">
+      <div id="popup"></div>
 
-        <div id="overlay" class="overlay">
-        </div>
+      <div id="card"></div>
 
-        <div id="card" onclick="createPopup()">
-        </div>
-
-        <div class="buttonStyle">
-            <button type="button" id="loadMoreButton" class="btn btn-secondary btn-lg">Weitere Pokémon laden</button>
-        </div>
-
+      <div class="buttonStyle">
+        <button
+          type="button"
+          id="loadMoreButton"
+          class="btn btn-secondary btn-lg"
+        >
+          Weitere Pokémon laden
+        </button>
+      </div>
     </div>
 
     <script src="script.js"></script>
     <script src="headerScript.js"></script>
-
-</body>
-
+  </body>
 </html>

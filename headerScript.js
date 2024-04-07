@@ -1,6 +1,7 @@
 async function searchPokemon(){
+    getPokemonDataArray();
     let pokemonName = document.querySelector('.inputfield').value.toLowerCase();
-    let pokemonData = await fetchPokemonData(pokemonName); 
+    let pokemonData = pokemonDataArray.find(pokemon => pokemon.name === pokemonName); 
     if(pokemonData) {
         createPopup(pokemonData);
     } else {
@@ -10,10 +11,15 @@ async function searchPokemon(){
 
 async function fetchPokemonData(pokemonName) {
     let url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
-    let response = await fetch(url);
-    let data = await response.json();
-    return data;
-} 
+    try {
+      let response = await fetch(url);
+      let data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching Pokemon data:", error);
+      return null;
+    }
+  }
 
 
 
