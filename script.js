@@ -204,5 +204,4 @@ function closePopupAndOverlay() {
   overlay.style.display = "none";
 }
 
-popup.addEventListener("click", closePopupAndOverlay);
 overlay.addEventListener("click", closePopupAndOverlay);
