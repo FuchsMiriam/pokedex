@@ -1,3 +1,14 @@
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+}
+
 .popup {
   position: fixed;
   top: 50%;
@@ -8,6 +19,10 @@
   border: 2px solid black;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
   z-index: 1000;
+}
+
+.popupOpen {
+  overflow: hidden;
 }
 
 .popup-content {
@@ -44,4 +59,38 @@
 .arrow.right {
   position: absolute;
   right: 50px;
+}
+
+@media (max-width: 1050px) {
+  .popup {
+    max-height: 90%;
+    max-width: 85%;
+  }
+
+  .popupImage {
+    max-height: 220px;
+  }
+}
+
+@media (max-width: 650px) {
+  .arrow.right {
+    right: 30px;
+  }
+  .arrow.left {
+    left: -10px;
+  }
+}
+
+@media (max-width: 816px) and (max-height: 400px) {
+  .popupImage {
+    max-height: 100px;
+  }
+
+  .popupHeadline {
+    font-size: 18px;
+  }
+
+  .popupText {
+    font-size: 14px;
+  }
 }

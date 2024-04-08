@@ -1,10 +1,6 @@
 let currentBatch = 1;
-let cardIndex = 1;
+let cardIndex = 0;
 let pokemonDataArray = [];
-
-function getPokemonDataArray() {
-  return pokemonDataArray;
-}
 
 //Daten holen
 async function fetchPokemonNames(startIndex, endIndex) {
@@ -42,10 +38,10 @@ document
   });
 
 async function loadPokemon() {
-  let startIndex = (currentBatch - 1) * 4;
-  let endIndex = currentBatch * 4;
+  let startIndex = (currentBatch - 1) * 40;
+  let endIndex = currentBatch * 40 - 1;
 
-  let pokemonNames = await fetchPokemonNames(startIndex + 1, endIndex);
+  let pokemonNames = await fetchPokemonNames(startIndex, endIndex);
 
   for (let i = 0; i < pokemonNames.length; i++) {
     let pokemonName = pokemonNames[i];
@@ -123,7 +119,9 @@ function formatStats(stats) {
 }
 
 function createPopup(index) {
-  let pokemonData = pokemonDataArray[index - 1];
+  let pokemonData = pokemonDataArray[index];
+
+  console.log("Pokemon Data:", pokemonData);
 
   if (
     pokemonData &&
@@ -137,22 +135,24 @@ function createPopup(index) {
     pokemonData.abilities
   ) {
     let name = capitalizeFirstLetter(pokemonData.name);
-    let formattedAbilities = formatAbilities(pokemonData.abilities);
-    let formattedStats = formatStats(pokemonData.stats);
+    let type = capitalizeFirstLetter(pokemonData.types[0].type.name);
     let formattedWeight = formatWeight(pokemonData.weight);
     let formattedHeight = formatHeight(pokemonData.height);
+    let formattedAbilities = formatAbilities(pokemonData.abilities);
+    let formattedStats = formatStats(pokemonData.stats);
 
     let popupHtml = `<div class="popup ${pokemonData.types[0].type.name}">
         <div class="popup-content">
             <span class="close" onclick="closePopup()">&times;</span>
             <div class="pokemon-details">
-                <h2>${name}</h2>
-                <img src="${pokemonData.sprites.other["official-artwork"].front_default}" alt="${pokemonData.name}">
-                <p><b>Gewicht:</b> ${formattedWeight}</p>
-                <p><b>Größe:</b> ${formattedHeight}</p>
-                <p><b>Abilities:</b> ${formattedAbilities}</p>
-                <p><b>Stats:</b></p>
-                <ul>${formattedStats}</ul>
+                <h2 class="popupHeadline">${name}</h2>
+                <p class="popupText">${type}</p>
+                <img class="popupImage" src="${pokemonData.sprites.other["official-artwork"].front_default}" alt="${pokemonData.name}">
+                <p class="popupText"><b>Gewicht:</b> ${formattedWeight}</p>
+                <p class="popupText"><b>Größe:</b> ${formattedHeight}</p>
+                <p class="popupText"><b>Abilities:</b> ${formattedAbilities}</p>
+                <p class="popupText"><b>Stats:</b></p>
+                <ul class="popupText">${formattedStats}</ul>
             </div>
             <div class="navigation">
                 <span class="arrow left" onclick="loadPreviousPokemon(${index})">❮</span>
@@ -166,10 +166,14 @@ function createPopup(index) {
   } else {
     console.error("Invalid pokemon data:", pokemonData);
   }
+  document.body.classList.add("popupOpen");
+  document.getElementById("overlay").style.display = "block";
 }
 
 function closePopup() {
   document.getElementById("popup").style.display = "none";
+  document.body.classList.remove("popupOpen");
+  document.getElementById("overlay").style.display = "none";
 }
 
 function loadPreviousPokemon(index) {
@@ -187,3 +191,13 @@ function loadNextPokemon(index) {
 document.addEventListener("DOMContentLoaded", function () {
   loadPokemon();
 });
+
+function closePopupAndOverlay() {
+  const popup = document.getElementById("popup");
+  const overlay = document.getElementById("overlay");
+  popup.style.display = "none";
+  overlay.style.display = "none";
+}
+
+popup.addEventListener("click", closePopupAndOverlay);
+overlay.addEventListener("click", closePopupAndOverlay);
