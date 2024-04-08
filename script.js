@@ -56,9 +56,14 @@ async function loadPokemon() {
 
 //Karte erstellen
 function createCard(pokemonData) {
-  let cardHtml = `<div id="card-${cardIndex}" class="card" onclick="createPopup(${cardIndex})">
-        <div class="imageContainer"><img id="pokemonImg${cardIndex}" class="card-img-top img-fluid rounded-start" alt="Pokemon">
-        </div>
+  generateCardHtml(pokemonData);
+  renderPokemonInfo(pokemonData, cardIndex);
+}
+
+function generateCardHtml(pokemonData) {
+  let cardHtml = `
+    <div id="card-${cardIndex}" class="card" onclick="createPopup(${cardIndex})">
+        <div class="imageContainer"><img id="pokemonImg${cardIndex}" class="card-img-top img-fluid rounded-start" alt="Pokemon"></div>
         <div class="card-body">
             <div class="pokedex-number-container">
                 <p class="number" id="pokedexNumberSymbol">#</p>
@@ -68,9 +73,7 @@ function createCard(pokemonData) {
             <p class="card-text" id="pokemonType${cardIndex}">Typ</p>
         </div>
     </div>`;
-
   document.getElementById("card").innerHTML += cardHtml;
-  renderPokemonInfo(pokemonData, cardIndex);
 }
 
 function renderPokemonInfo(currentPokemon, index) {
@@ -121,8 +124,6 @@ function formatStats(stats) {
 function createPopup(index) {
   let pokemonData = pokemonDataArray[index];
 
-  console.log("Pokemon Data:", pokemonData);
-
   if (
     pokemonData &&
     pokemonData.types &&
@@ -134,6 +135,14 @@ function createPopup(index) {
     pokemonData.sprites.other["official-artwork"].front_default &&
     pokemonData.abilities
   ) {
+    generatePopupHtml(pokemonData, index);
+    document.body.classList.add("popupOpen");
+    document.getElementById("overlay").style.display = "block";
+  } else {
+    console.error("Invalid pokemon data:", pokemonData);
+  }
+
+  function generatePopupHtml(pokemonData, index) {
     let name = capitalizeFirstLetter(pokemonData.name);
     let type = capitalizeFirstLetter(pokemonData.types[0].type.name);
     let formattedWeight = formatWeight(pokemonData.weight);
@@ -163,11 +172,7 @@ function createPopup(index) {
 
     document.getElementById("popup").innerHTML = popupHtml;
     document.getElementById("popup").style.display = "block";
-  } else {
-    console.error("Invalid pokemon data:", pokemonData);
   }
-  document.body.classList.add("popupOpen");
-  document.getElementById("overlay").style.display = "block";
 }
 
 function closePopup() {
