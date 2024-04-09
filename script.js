@@ -138,6 +138,12 @@ function createPopup(index) {
     generatePopupHtml(pokemonData, index);
     document.body.classList.add("popupOpen");
     document.getElementById("overlay").style.display = "block";
+
+    if (index === 0) {
+      document.querySelector(".arrow.left").style.display = "none";
+    } else {
+      document.querySelector(".arrow.left").style.display = "inline-block";
+    }
   } else {
     console.error("Invalid pokemon data:", pokemonData);
   }
@@ -182,7 +188,7 @@ function closePopup() {
 }
 
 function loadPreviousPokemon(index) {
-  if (index > 1) {
+  if (index > 0) {
     createPopup(index - 1);
   }
 }
@@ -202,6 +208,7 @@ function closePopupAndOverlay() {
   const overlay = document.getElementById("overlay");
   popup.style.display = "none";
   overlay.style.display = "none";
+  document.body.classList.remove("popupOpen");
 }
 
 overlay.addEventListener("click", closePopupAndOverlay);
