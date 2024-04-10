@@ -11,6 +11,7 @@ async function searchPokemon() {
   } else {
     alert("Pokemon not found!");
   }
+  document.querySelector(".inputfield").value = "";
 }
 
 function loadPreviousPokemon(index) {

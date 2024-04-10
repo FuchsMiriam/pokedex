@@ -8,49 +8,48 @@
     <link rel="shortcut icon" href="./img/pokemon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="stylePopup.css" />
-    <link
-      rel="stylesheet"
-      href="./bootstrap.min.css"
-    />
+    <link rel="stylesheet" href="./bootstrap.min.css" />
     <link rel="stylesheet" href="fonts.css" />
     <link rel="stylesheet" href="bg-colors.css" />
   </head>
 
   <body>
     <div id="overlay"></div>
-    <div class="header">
-      <div class="headerLeft">
-        <h1 class="headline">Pokédex</h1>
-        <a href="./index.html"
-          ><img src="./img/pokeball.jpg" alt="Pokeball" class="headerImg"
-        /></a>
+    <div class="mainContainer">
+      <div class="header">
+        <div class="headerLeft">
+          <h1 class="headline">Pokédex</h1>
+          <a href="./index.html"
+            ><img src="./img/pokeball.jpg" alt="Pokeball" class="headerImg"
+          /></a>
+        </div>
+
+        <div class="headerRight">
+          <input id="input" class="inputfield" type="text" />
+          <button
+            onclick="searchPokemon()"
+            type="button"
+            class="btn btn-secondary btn-sm searchButton"
+          >
+            Suchen
+          </button>
+        </div>
       </div>
 
-      <div class="headerRight">
-        <input class="inputfield" type="text" />
-        <button
-          onclick="searchPokemon()"
-          type="button"
-          class="btn btn-secondary btn-sm searchButton"
-        >
-          Suchen
-        </button>
-      </div>
-    </div>
+      <div id="pokedex">
+        <div id="popup"></div>
 
-    <div id="pokedex">
-      <div id="popup"></div>
+        <div id="card"></div>
 
-      <div id="card"></div>
-
-      <div class="buttonStyle">
-        <button
-          type="button"
-          id="loadMoreButton"
-          class="btn btn-secondary btn-lg"
-        >
-          Weitere Pokémon laden
-        </button>
+        <div class="buttonStyle">
+          <button
+            type="button"
+            id="loadMoreButton"
+            class="btn btn-secondary btn-lg"
+          >
+            Weitere Pokémon laden
+          </button>
+        </div>
       </div>
     </div>
 

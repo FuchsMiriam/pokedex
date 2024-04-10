@@ -122,9 +122,36 @@ function formatStats(stats) {
 }
 
 function createPopup(index) {
-  let pokemonData = pokemonDataArray[index];
+  const pokemonData = pokemonDataArray[index];
+  if (isValidPokemonData(pokemonData)) {
+    let popupHtml = generatePopupHtml(pokemonData, index);
+    document.getElementById("popup").innerHTML = popupHtml;
+    document.getElementById("popup").style.display = "block";
+    document.body.classList.add("popupOpen");
+    document.getElementById("overlay").style.display = "block";
+    if (
+      index === 0 ||
+      !pokemonDataArray[index - 1].name.startsWith(currentSearchTerm)
+    ) {
+      document.querySelector(".arrow.left").style.display = "none";
+    } else {
+      document.querySelector(".arrow.left").style.display = "inline-block";
+    }
+    if (
+      index === pokemonDataArray.length - 1 ||
+      !pokemonDataArray[index + 1].name.startsWith(currentSearchTerm)
+    ) {
+      document.querySelector(".arrow.right").style.display = "none";
+    } else {
+      document.querySelector(".arrow.right").style.display = "inline-block";
+    }
+  } else {
+    console.error("Invalid pokemon data:", pokemonData);
+  }
+}
 
-  if (
+function isValidPokemonData(pokemonData) {
+  return (
     pokemonData &&
     pokemonData.types &&
     pokemonData.types[0] &&
@@ -134,51 +161,53 @@ function createPopup(index) {
     pokemonData.sprites.other["official-artwork"] &&
     pokemonData.sprites.other["official-artwork"].front_default &&
     pokemonData.abilities
-  ) {
-    generatePopupHtml(pokemonData, index);
-    document.body.classList.add("popupOpen");
-    document.getElementById("overlay").style.display = "block";
+  );
+}
 
-    if (index === 0) {
-      document.querySelector(".arrow.left").style.display = "none";
-    } else {
-      document.querySelector(".arrow.left").style.display = "inline-block";
-    }
-  } else {
-    console.error("Invalid pokemon data:", pokemonData);
-  }
+function generatePopupHtml(pokemonData, index) {
+  const name = capitalizeFirstLetter(pokemonData.name);
+  const type = capitalizeFirstLetter(pokemonData.types[0].type.name);
+  const formattedWeight = formatWeight(pokemonData.weight);
+  const formattedHeight = formatHeight(pokemonData.height);
+  const formattedAbilities = formatAbilities(pokemonData.abilities);
+  const formattedStats = formatStats(pokemonData.stats);
 
-  function generatePopupHtml(pokemonData, index) {
-    let name = capitalizeFirstLetter(pokemonData.name);
-    let type = capitalizeFirstLetter(pokemonData.types[0].type.name);
-    let formattedWeight = formatWeight(pokemonData.weight);
-    let formattedHeight = formatHeight(pokemonData.height);
-    let formattedAbilities = formatAbilities(pokemonData.abilities);
-    let formattedStats = formatStats(pokemonData.stats);
+  let popupHtml = `<div class="popup ${pokemonData.types[0].type.name}">
+    <div class="popup-content">
+      <span class="close" onclick="closePopup()">&times;</span>
+      ${generatePokemonDetails(
+        name,
+        type,
+        pokemonData.sprites.other["official-artwork"].front_default,
+        formattedWeight,
+        formattedHeight,
+        formattedAbilities,
+        formattedStats,
+        index
+      )}
+    </div>
+  </div>`;
 
-    let popupHtml = `<div class="popup ${pokemonData.types[0].type.name}">
-        <div class="popup-content">
-            <span class="close" onclick="closePopup()">&times;</span>
-            <div class="pokemon-details">
-                <h2 class="popupHeadline">${name}</h2>
-                <p class="popupText">${type}</p>
-                <img class="popupImage" src="${pokemonData.sprites.other["official-artwork"].front_default}" alt="${pokemonData.name}">
-                <p class="popupText"><b>Gewicht:</b> ${formattedWeight}</p>
-                <p class="popupText"><b>Größe:</b> ${formattedHeight}</p>
-                <p class="popupText"><b>Abilities:</b> ${formattedAbilities}</p>
-                <p class="popupText"><b>Stats:</b></p>
-                <ul class="popupText">${formattedStats}</ul>
-            </div>
-            <div class="navigation">
-                <span class="arrow left" onclick="loadPreviousPokemon(${index})">❮</span>
-                <span class="arrow right" onclick="loadNextPokemon(${index})">❯</span>
-            </div>
-        </div>
-    </div>`;
+  return popupHtml;
+}
 
-    document.getElementById("popup").innerHTML = popupHtml;
-    document.getElementById("popup").style.display = "block";
-  }
+function generatePokemonDetails(name, type, imageUrl, weight, height, abilities, stats, index) {
+  return `
+    <div class="pokemon-details">
+      <h2 class="popupHeadline">${name}</h2>
+      <p class="popupText">${type}</p>
+      <img class="popupImage" src="${imageUrl}" alt="${name}">
+      <p class="popupText"><b>Gewicht:</b> ${weight}</p>
+      <p class="popupText"><b>Größe:</b> ${height}</p>
+      <p class="popupText"><b>Abilities:</b> ${abilities}</p>
+      <p class="popupText"><b>Stats:</b></p>
+      <ul class="popupText">${stats}</ul>
+      <div class="navigation">
+        <span class="arrow left" onclick="loadPreviousPokemon(${index})">❮</span>
+        <span class="arrow right" onclick="loadNextPokemon(${index})">❯</span>
+      </div>
+    </div>
+  `;
 }
 
 function closePopup() {
@@ -212,3 +241,10 @@ function closePopupAndOverlay() {
 }
 
 overlay.addEventListener("click", closePopupAndOverlay);
+
+document.getElementById("input").addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    searchPokemon();
+  }
+});
