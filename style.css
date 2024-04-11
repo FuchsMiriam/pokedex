@@ -25,6 +25,8 @@ body::-webkit-scrollbar-thumb {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .headerLeft {
@@ -101,7 +103,7 @@ body {
 #card {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .imageContainer {
@@ -135,6 +137,12 @@ body {
 
 #loadMoreButton {
   cursor: pointer;
+}
+
+@media (max-width: 1045px){
+  #card{
+    justify-content: center;
+  }
 }
 
 @media (max-width: 600px) {
